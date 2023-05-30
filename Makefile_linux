@@ -7,21 +7,21 @@ SOURCES = Game.c
 
 HEADERS = Choice212.h Choice121.h Choice11.h Choice1.h Choice2.h FightEvent.h Functions.h Stat.h Programmefile.h
 
-TEXT_DIR1 = /home/user/project/Histoire
-TEXT_DIR2 = /home/user/project/stat
+TEXT_DIR1 = /cygdrive/c/cygwin64/PROJET-PRE-ING-1-main/project/Histoire
+TEXT_DIR2 = /cygdrive/c/cygwin64/PROJET-PRE-ING-1-main/project/stat
 
-TEXT_FILES1 = $(wildcard $(TEXT_DIR1)/*.txt)
-TEXT_FILES2 = $(wildcard $(TEXT_DIR2)/*.txt)
+TEXT_FILES1 := $(shell find $(TEXT_DIR1) -type f -name '*.txt')
+TEXT_FILES2 := $(shell find $(TEXT_DIR2) -type f -name '*.txt')
 
 all: $(TARGET)
 
 $(TARGET): $(SOURCES) $(HEADERS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(SOURCES) -DTEXT_DIR1=\"$(TEXT_DIR1)\" -DTEXT_DIR2=\"$(TEXT_DIR2)\"
+	$(CC) $(CFLAGS) -o $(TARGET) $(SOURCES) -DTEXT_DIR1='"$(TEXT_DIR1)"' -DTEXT_DIR2='"$(TEXT_DIR2)"'
 
 .PHONY: copy_text_files
 copy_text_files:
-	for file in $(TEXT_FILES1); do cp "$$file" '.'; done
-	for file in $(TEXT_FILES2); do cp "$$file" '.'; done
+	for file in $(TEXT_FILES1); do cp "$$file" .; done
+	for file in $(TEXT_FILES2); do cp "$$file" .; done
 
 .PHONY: clean_text_files
 clean_text_files:
@@ -29,8 +29,8 @@ clean_text_files:
 
 .PHONY: clean_text_memory
 clean_text_memory:
-	rm -f $(TEXT_FILES1)
-	rm -f $(TEXT_FILES2)
+	for file in $(TEXT_FILES1); do rm -f "$$file"; done
+	for file in $(TEXT_FILES2); do rm -f "$$file"; done
 
 clean:
 	rm -f $(TARGET) *.txt
